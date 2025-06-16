@@ -1,0 +1,7 @@
+{
+  "name": "meta-bot",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

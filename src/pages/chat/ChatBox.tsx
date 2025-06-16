@@ -1,6 +1,8 @@
-// import React from 'react';
 
-// const ChatBox = ({ user }) => {
+// import React from 'react';
+// import { FaArrowLeft, FaEllipsisV } from 'react-icons/fa';
+
+// const ChatBox = ({ user, onBack }) => {
 //   if (!user) {
 //     return (
 //       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#e5ddd5' }}>
@@ -12,27 +14,31 @@
 //   return (
 //     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#e5ddd5' }}>
 //       {/* Header */}
-//       <div style={{ padding: '12px 16px', backgroundColor: '#f0f2f5', display: 'flex', alignItems: 'center', borderBottom: '1px solid #ccc' }}>
-//         <div
-//           style={{
-//             width: 40,
-//             height: 40,
-//             backgroundColor: '#25D366',
-//             borderRadius: '50%',
-//             display: 'flex',
-//             alignItems: 'center',
-//             justifyContent: 'center',
-//             fontWeight: 'bold',
-//             color: '#fff',
-//             marginRight: '12px'
-//           }}
-//         >
-//           {user.name ? user.name.charAt(0).toUpperCase() : '👤'}
+//       <div style={{ padding: '12px 16px', backgroundColor: '#f0f2f5', display: 'flex', alignItems: 'center', borderBottom: '1px solid #ccc', justifyContent: 'space-between' }}>
+//         <div style={{ display: 'flex', alignItems: 'center' }}>
+//           <FaArrowLeft style={{ marginRight: '12px', cursor: 'pointer', fontSize: '18px' }} onClick={onBack} />
+//           <div
+//             style={{
+//               width: 40,
+//               height: 40,
+//               backgroundColor: '#25D366',
+//               borderRadius: '50%',
+//               display: 'flex',
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//               fontWeight: 'bold',
+//               color: '#fff',
+//               marginRight: '12px'
+//             }}
+//           >
+//             {user.name ? user.name.charAt(0).toUpperCase() : '👤'}
+//           </div>
+//           <div style={{ display: 'flex', flexDirection: 'column' }}>
+//             <strong>{user.name}</strong>
+//             <small style={{ color: '#555' }}>{user.phone_number}</small>
+//           </div>
 //         </div>
-//         <div style={{ display: 'flex', flexDirection: 'column' }}>
-//           <strong>{user.name}</strong>
-//           <small style={{ color: '#555' }}>{user.phone_number}</small>
-//         </div>
+//         <FaEllipsisV style={{ cursor: 'pointer', fontSize: '18px' }} onClick={() => alert('More options')} />
 //       </div>
 
 //       {/* Chat Messages */}
@@ -67,10 +73,34 @@
 // export default ChatBox;
 
 
-import React from 'react';
+
+
+
+import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaEllipsisV } from 'react-icons/fa';
+import axios from 'axios';
 
 const ChatBox = ({ user, onBack }) => {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      const fetchMessages = async () => {
+        try {
+          const response = await axios.get(
+            `https://chatbotbe.popoutbox.in/api/whatsapp/chat/${user.phone_number}/messages/?page=1&page_size=10&bot_number=917400500200`
+          );
+          if (response.data?.data) {
+            setMessages(response.data.data);
+          }
+        } catch (error) {
+          console.error('Failed to fetch messages:', error);
+        }
+      };
+      fetchMessages();
+    }
+  }, [user]);
+
   if (!user) {
     return (
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#e5ddd5' }}>
@@ -111,14 +141,29 @@ const ChatBox = ({ user, onBack }) => {
 
       {/* Chat Messages */}
       <div style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {/* Incoming Message */}
-        <div style={{ alignSelf: 'flex-start', maxWidth: '60%', backgroundColor: '#fff', padding: '8px 12px', borderRadius: '7.5px', boxShadow: '0 1px 1px rgba(0,0,0,0.1)' }}>
-          <span style={{ fontSize: '14px' }}>{user.name}: Hello!</span>
-        </div>
-        {/* Outgoing Message */}
-        <div style={{ alignSelf: 'flex-end', maxWidth: '60%', backgroundColor: '#dcf8c6', padding: '8px 12px', borderRadius: '7.5px', boxShadow: '0 1px 1px rgba(0,0,0,0.1)' }}>
-          <span style={{ fontSize: '14px' }}>You: Hi, how are you?</span>
-        </div>
+        {messages.map((msg, index) => {
+          const isUser = msg.sender === 'user';
+          const messageText = typeof msg.message === 'string' ? msg.message : msg.message.text || msg.message.body || '[Unsupported message]';
+
+          return (
+            <div
+              key={index}
+              style={{
+                alignSelf: isUser ? 'flex-start' : 'flex-end',
+                maxWidth: '60%',
+                backgroundColor: isUser ? '#dcf8c6' : '#fff',
+                padding: '8px 12px',
+                borderRadius: '7.5px',
+                boxShadow: '0 1px 1px rgba(0,0,0,0.1)',
+                whiteSpace: 'pre-wrap',
+                fontSize: '14px',
+                lineHeight:'1.6'
+              }}
+            >
+              {messageText}
+            </div>
+          );
+        })}
       </div>
 
       {/* Message Input */}
@@ -139,4 +184,5 @@ const ChatBox = ({ user, onBack }) => {
 };
 
 export default ChatBox;
+
 

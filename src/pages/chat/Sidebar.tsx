@@ -31,7 +31,7 @@ const Sidebar: React.FC<{ onSelectUser: (user: User) => void }> = ({ onSelectUse
     <div
       style={{
         width: '100%',
-        maxWidth: '360px',
+        // maxWidth: '100%',
         borderRight: '1px solid #ccc',
         height: '100vh',
         display: 'flex',

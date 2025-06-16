@@ -21,7 +21,7 @@ const ChatApp: React.FC = () => {
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
       {(!isMobile || !selectedUser) && (
-        <div style={{ width: isMobile ? '100%' : '320px' }}>
+        <div style={{ width: isMobile ? '100%' : '40%' }}>
           <Sidebar onSelectUser={setSelectedUser} />
         </div>
       )}

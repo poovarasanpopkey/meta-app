@@ -1,9 +1,15 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.poovi.metabot',
+  // appId: 'com.poovi.metabot',
   appName: 'meta-bot',
-  webDir: 'dist'
+  webDir: 'dist',
+    plugins: {
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"],
+    },
+  },
 };
 
 export default config;

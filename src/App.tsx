@@ -36,10 +36,22 @@ import './theme/variables.css';
 // import Chat from './pages/chat/Chat';
 import UserList from './pages/chat/UserList';
 import ChatApp from './pages/chat/ChatApp';
+import { useEffect } from 'react';
+import { addFCMListeners, registerNotifications } from './notifications/fcm';
 
 setupIonicReact();
 
-const App: React.FC = () => (
+const App: React.FC = () => { 
+  
+    useEffect(() => {
+    const setupFCM = async () => {
+      await registerNotifications();
+      await addFCMListeners();
+    };
+
+    setupFCM();
+  }, []);
+  return (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
@@ -55,6 +67,6 @@ const App: React.FC = () => (
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
-);
+);}
 
 export default App;

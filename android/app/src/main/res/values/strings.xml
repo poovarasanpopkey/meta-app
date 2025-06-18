@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">meta-bot</string>
+    <string name="title_activity_main">meta-bot</string>
+    <string name="package_name">com.poovi.metabot</string>
+    <string name="custom_url_scheme">com.poovi.metabot</string>
+</resources>

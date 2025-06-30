@@ -410,7 +410,7 @@ const ChatBox = ({ user, onBack }) => {
         )}
       </div>
 
-      <div
+      {/* <div
         style={{
           position: 'fixed',
           bottom: 0,
@@ -464,7 +464,61 @@ const ChatBox = ({ user, onBack }) => {
         >
           &#10148;
         </button>
-      </div>
+      </div> */}
+      <div
+  style={{
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: '8px 12px',
+    backgroundColor: '#f0f2f5',
+    borderTop: '1px solid #ccc',
+    display: 'flex',
+    alignItems: 'center',
+    zIndex: 10,
+  }}
+>
+  <input
+    type="text"
+    placeholder="Type a message"
+    value={inputText}
+    ref={inputRef}
+    onFocus={() => {
+      setTimeout(() => {
+        chatContainerRef.current?.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: 'smooth' });
+      }, 100);
+    }}
+    onChange={(e) => setInputText(e.target.value)}
+    style={{
+      flex: 1,
+      border: 'none',
+      borderRadius: '20px',
+      padding: '10px 15px',
+      marginRight: '10px',
+      outline: 'none',
+      backgroundColor: '#fff',
+    }}
+  />
+  <button
+    onClick={handleSend}
+    style={{
+      backgroundColor: '#075E54',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '50%',
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+    }}
+  >
+    &#10148;
+  </button>
+</div>
+
     </div>
   );
 };

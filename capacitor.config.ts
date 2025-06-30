@@ -1,13 +1,16 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'com.poovi.metabot',
+  appId: "com.poovi.metabot",
   // appId: 'com.poovi.metabot',
-  appName: 'meta-bot',
-  webDir: 'dist',
-    plugins: {
+  appName: "meta-bot",
+  webDir: "dist",
+  plugins: {
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
+    },
+    Keyboard: {
+      resize: "native",
     },
   },
 };

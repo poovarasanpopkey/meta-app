@@ -57,9 +57,31 @@ export const registerNotifications = async () => {
 };
 
 export const addFCMListeners = async () => {
-  PushNotifications.addListener('registration', token => {
+  // PushNotifications.addListener('registration', token => {
+  //   console.log('FCM registration token:', token.value);
+  // });
+  PushNotifications.addListener('registration', async token => {
     console.log('FCM registration token:', token.value);
+
+    try {
+      const response = await fetch('https://chatbotbe.popoutbox.in/api/whatsapp/app/save-token/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Authorization': `Bearer ${yourAccessToken}`, // Replace with actual token if protected
+        },
+        body: JSON.stringify({
+          token: token.value
+        })
+      });
+
+      const data = await response.json();
+      console.log('Token saved response:', data);
+    } catch (error) {
+      console.error('Error saving FCM token:', error);
+    }
   });
+
 
   PushNotifications.addListener('registrationError', err => {
     console.error('Registration error:', err.error);
